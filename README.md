@@ -25,56 +25,75 @@ To write, simulate, and verify the swapping of three numbers using Verilog HDL a
 
 ## Verilog HDL Code
 
-```verilog
-module swap3;
-
-reg [7:0] a, b, c;
-reg [7:0] temp;
-
-initial
-begin
-    a = 8'd10;
-    b = 8'd20;
-    c = 8'd30;
-
-    $display("Before Swapping");
-    $display("A=%d B=%d C=%d", a, b, c);
-
-    temp = a;
-    a = b;
-    b = c;
-    c = temp;
-
-    #10;
-
-    $display("After Swapping");
-    $display("A=%d B=%d C=%d", a, b, c);
+```
+module swap_1(
+input [3:0] a,
+input [3:0] b,
+input [3:0] c,
+output reg [3:0] x,
+output reg [3:0] y,
+output reg [3:0] z
+);
+reg [3:0] ta,tb,tc;
+reg [3:0] temp;
+always@(*)begin
+ta=a;
+tb=b;
+tc=c;
+temp=ta;
+ta=tb;
+tb=tc;
+tc=temp;
+x=ta;
+y=tb;
+z=tc;
 end
-
 endmodule
 ```
 
 ## Testbench Code
 
-```verilog
+```
 `timescale 1ns/1ps
+module swap_tb;
+    reg [3:0] a;
+    reg [3:0] b;
+    reg [3:0] c;
 
-module swap3_tb;
+    wire [3:0] x;
+    wire [3:0] y;
+    wire [3:0] z;
 
-swap3 uut();
+    swap_1 uut (
+        .a(a),
+        .b(b),
+        .c(c),
+        .x(x),
+        .y(y),
+        .z(z)
+    );
 
-initial
-begin
-    #20;
-    $finish;
-end
+    initial begin
+        a = 4'd1;  b = 4'd2;  c = 4'd3;
+        #10;
 
+        a = 4'd5;  b = 4'd7;  c = 4'd9;
+        #10;
+
+        a = 4'd10; b = 4'd12; c = 4'd15;
+        #10;
+
+        a = 4'd0;  b = 4'd8;  c = 4'd4;
+        #10;
+
+        $finish;
+    end
 endmodule
 ```
 
 ## Expected Output
-
-
+<img width="800" height="700" alt="image" src="https://github.com/user-attachments/assets/4510af87-e233-43fe-8b45-ebf3dd8fc6a7" />
+<img width="800" height="700" alt="image" src="https://github.com/user-attachments/assets/0124c0e7-f155-4ce6-9071-f950d7f5135f" />
 
 ## Result
 
